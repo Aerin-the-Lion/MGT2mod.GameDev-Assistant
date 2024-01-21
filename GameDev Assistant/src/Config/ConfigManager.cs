@@ -52,6 +52,7 @@ namespace GameDevAssistant.Config
         private const string ModSettingsSection = "0. MOD Settings";
         private const string MainSettingSection = "1. General Setting";
         private const string ColorSettingSection = "2. Coloring Settings";
+        private const string AssistButtonSettingSection = "3. Assist Button Settings";
 
         // =============================================================================================================
         // Config entries 
@@ -74,6 +75,10 @@ namespace GameDevAssistant.Config
         // Name Config ---------------------------------------------------------------
 
         public static ConfigEntry<bool> IsAssistRandomNameEnabled { get; private set; }
+
+        // Pinned Main Genre Config ---------------------------------------------------------------
+
+        public static ConfigEntry<bool> IsPinnedMainGenreEnabled { get; private set; }
 
         // -----------------------------------------------------------------------------
 
@@ -106,9 +111,9 @@ namespace GameDevAssistant.Config
             // Theme Config
             IsAssistThemeEnabled = ConfigFile.Bind(
                 MainSettingSection,
-                "Assist Themes",
+                "Assist Topics(Themes)",
                 true,
-                "Enabling this option assists with the Theme selection in the theme menu.");
+                "Enabling this option assists with the Theme selection in the (topic)theme menu.");
 
             // ----------------------------------------------------------------------------------------------------------------
             // Genre Config
@@ -136,10 +141,17 @@ namespace GameDevAssistant.Config
 
             // Random Name Config
             IsAssistRandomNameEnabled = ConfigFile.Bind(
-                MainSettingSection,
+                AssistButtonSettingSection,
                 "Assist Random Name",
                 true,
                 "Enabling this option assists with the Random Name with the assist button.");
+
+            // Pinned Main Genre Config
+            IsPinnedMainGenreEnabled = ConfigFile.Bind(
+                AssistButtonSettingSection,
+                "Pinned Main Genre",
+                true,
+                "Enabling this option, the main genre in the genre menu is no longer changed when you're pushed the assist button.");
 
             // ----------------------------------------------------------------------------------------------------------------
 

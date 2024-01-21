@@ -2,6 +2,7 @@
 using UnityEngine;
 using GameDevAssistant.Config;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace GameDevAssistant.Modules
 {
@@ -70,6 +71,7 @@ namespace GameDevAssistant.Modules
         public static void FindFitMainGenreAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
+            if (ConfigManager.IsPinnedMainGenreEnabled.Value && menu_Dev_Game.g_GameMainGenre > 0) return;
             Menu_DevGame_Genre menuGenre = guiMain_.uiObjects[61].GetComponent<Menu_DevGame_Genre>();
             menuGenre.Init(0);
 
@@ -81,10 +83,7 @@ namespace GameDevAssistant.Modules
                 GameObject childObj = child.gameObject;
                 Item_DevGame_Genre myGenre = childObj.GetComponent<Item_DevGame_Genre>();
 
-                if (myGenre != null && genres_.IsGenreCombination(menu_Dev_Game.g_GameMainGenre, myGenre.myID))
-                {
-                    validGenres.Add(myGenre);
-                }else if(menu_Dev_Game.g_GameMainGenre <= 0) 　//もしメインジャンルが未設定の場合は、全てのジャンルをリストに追加する
+                if (myGenre != null) //もしメインジャンルが未設定の場合は、全てのジャンルをリストに追加する
                 {
                     validGenres.Add(myGenre);
                 }
@@ -107,15 +106,20 @@ namespace GameDevAssistant.Modules
         public static void FindFitSubGenreAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
+            if (!IsSubGenreUnlocked(menu_Dev_Game)) { return; }
+
             Menu_DevGame_Genre menuGenre = guiMain_.uiObjects[61].GetComponent<Menu_DevGame_Genre>();
             menuGenre.Init(0);
 
             List<Item_DevGame_Genre> validGenres = new List<Item_DevGame_Genre>();
+            int mainGenre = menu_Dev_Game.g_GameMainGenre;
 
             foreach (Transform child in menuGenre.uiObjects[0].transform)
             {
                 GameObject childObj = child.gameObject;
                 Item_DevGame_Genre myGenre = childObj.GetComponent<Item_DevGame_Genre>();
+                if (myGenre == null) { continue; }
+                if(myGenre.myID == mainGenre){ continue; }
 
                 if (myGenre != null && genres_.IsGenreCombination(menu_Dev_Game.g_GameMainGenre, myGenre.myID))
                 {
@@ -180,14 +184,21 @@ namespace GameDevAssistant.Modules
         public static void FindFitSubThemeAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
+            if (!IsSubThemeUnlocked(menu_Dev_Game)) { return; }
+
             Menu_DevGame_Theme menuTheme = guiMain_.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
+            menuTheme.Init(0);
+            menuTheme.gameObject.SetActive(true); //検索結果がバグるので、これで対策。
 
             List<Item_DevGame_Theme> validTheme = new List<Item_DevGame_Theme>();
+            int mainTheme = menu_Dev_Game.g_GameMainTheme;
 
             foreach (Transform child in menuTheme.uiObjects[0].transform)
             {
                 GameObject childObj = child.gameObject;
                 Item_DevGame_Theme myTheme = childObj.GetComponent<Item_DevGame_Theme>();
+                if (myTheme == null) { continue; }
+                if (myTheme.myID == mainTheme) { continue; }
 
                 if (myTheme != null && themes_.IsThemesFitWithGenre(myTheme.myID, menu_Dev_Game.g_GameMainGenre))
                 {
@@ -210,6 +221,7 @@ namespace GameDevAssistant.Modules
             {
                 // 対象となるジャンルが見つからなかった場合の処理
             }
+            menuTheme.gameObject.SetActive(false);//検索結果がバグるので、これで対策。
         }
 
         public static void FindFitAgeTargetGroupAtRandom()
@@ -237,6 +249,35 @@ namespace GameDevAssistant.Modules
             else
             {
                 // 対象となる年齢グループが見つからなかった場合の処理
+            }
+        }
+        //forschungSonstiges - Research Miscellaneous
+
+        private static bool IsSubGenreUnlocked(Menu_DevGame menu) 
+        {
+            //forschungSonstiges_
+            forschungSonstiges resMis = Traverse.Create(menu).Field("forschungSonstiges_").GetValue<forschungSonstiges>();
+            if (resMis != null && resMis.IsErforscht(35))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        private static bool IsSubThemeUnlocked(Menu_DevGame menu)
+        {
+            //forschungSonstiges_
+            forschungSonstiges resMis = Traverse.Create(menu).Field("forschungSonstiges_").GetValue<forschungSonstiges>();
+            if (resMis != null && resMis.IsErforscht(36))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
