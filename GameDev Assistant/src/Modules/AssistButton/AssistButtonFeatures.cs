@@ -6,47 +6,62 @@ using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace GameDevAssistant.Modules
 {
-    public class AssistFeatures: MonoBehaviour
+    public partial class AssistButtonFeatures: MonoBehaviour
     {
-        public static GameObject obj_Dev_Game;
-        public static Menu_DevGame menu_Dev_Game;
-        public static genres genres_;
-        public static themes themes_;
-        public static GUI_Main guiMain_;
+        private GameObject _obj_Dev_Game;
+        private Menu_DevGame _menu_Dev_Game;
+        private genres _genres;
+        private themes _themes;
+        private GUI_Main _guiMain;
 
-        public static void FindScripts()
+        private static AssistButtonFeatures _instance { get; set; }
+
+        public static AssistButtonFeatures Instance
         {
-            if(obj_Dev_Game == null)
+            get
             {
-                obj_Dev_Game = GameObject.Find("CanvasInGameMenu").transform.Find("Menu_Dev_Game").gameObject;
-            }
-            if(menu_Dev_Game == null)
-            {
-                menu_Dev_Game = obj_Dev_Game.GetComponent<Menu_DevGame>();
-            }
-            if(genres_ == null)
-            {
-                genres_ = Traverse.Create(menu_Dev_Game).Field("genres_").GetValue<genres>();
-            }
-            if(themes_ == null)
-            {
-                themes_ = Traverse.Create(menu_Dev_Game).Field("themes_").GetValue<themes>();
-            }
-            if(guiMain_ == null)
-            {
-                guiMain_ = Traverse.Create(menu_Dev_Game).Field("guiMain_").GetValue<GUI_Main>();
+                if (_instance == null)
+                {
+                    _instance = new AssistButtonFeatures();
+                }
+                return _instance;
             }
         }
 
-        public static void Init()
+        private void FindScripts()
+        {
+            if(_obj_Dev_Game == null)
+            {
+                _obj_Dev_Game = GameObject.Find("CanvasInGameMenu").transform.Find("Menu_Dev_Game").gameObject;
+            }
+            if(_menu_Dev_Game == null)
+            {
+                _menu_Dev_Game = _obj_Dev_Game.GetComponent<Menu_DevGame>();
+            }
+            if(_genres == null)
+            {
+                _genres = Traverse.Create(_menu_Dev_Game).Field("genres_").GetValue<genres>();
+            }
+            if(_themes == null)
+            {
+                _themes = Traverse.Create(_menu_Dev_Game).Field("themes_").GetValue<themes>();
+            }
+            if(_guiMain == null)
+            {
+                _guiMain = Traverse.Create(_menu_Dev_Game).Field("guiMain_").GetValue<GUI_Main>();
+            }
+        }
+
+        public void Init()
         {
             if (!ConfigManager.IsModEnabled.Value) { return; }
             FindScripts();
+            _isInitPlatform = false;
 
             //名前自動化
             if (ConfigManager.IsAssistRandomNameEnabled.Value)
             {
-                menu_Dev_Game.BUTTON_RandomGameName();
+                _menu_Dev_Game.BUTTON_RandomGameName();
             }
 
             //ジャンル自動化
@@ -63,16 +78,22 @@ namespace GameDevAssistant.Modules
             //デザイン設定自動化
             if (ConfigManager.IsAssistAutoDesignSliderEnabled.Value)
             {
-                menu_Dev_Game.BUTTON_AutoDesignSettings();
+                _menu_Dev_Game.BUTTON_AutoDesignSettings();
+            }
+
+            //プラットフォーム自動化
+            for(int i = 0; i < 3; i++)
+            {
+                InitializePlatformSelection(i, false);
             }
         }
 
 
-        public static void FindFitMainGenreAtRandom()
+        private void FindFitMainGenreAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
-            if (ConfigManager.IsPinnedMainGenreEnabled.Value && menu_Dev_Game.g_GameMainGenre > 0) return;
-            Menu_DevGame_Genre menuGenre = guiMain_.uiObjects[61].GetComponent<Menu_DevGame_Genre>();
+            if (ConfigManager.IsPinnedMainGenreEnabled.Value && _menu_Dev_Game.g_GameMainGenre > 0) return;
+            Menu_DevGame_Genre menuGenre = _guiMain.uiObjects[61].GetComponent<Menu_DevGame_Genre>();
             menuGenre.Init(0);
 
             List<Item_DevGame_Genre> validGenres = new List<Item_DevGame_Genre>();
@@ -95,7 +116,7 @@ namespace GameDevAssistant.Modules
                 int randomIndex = UnityEngine.Random.Range(0, validGenres.Count);
                 Item_DevGame_Genre selectedGenre = validGenres[randomIndex];
                 // ここでselectedGenreを使用して何か処理を行う
-                menu_Dev_Game.SetMainGenre(selectedGenre.myID); // ここでランダムな数字を設定
+                _menu_Dev_Game.SetMainGenre(selectedGenre.myID); // ここでランダムな数字を設定
             }
             else
             {
@@ -103,16 +124,16 @@ namespace GameDevAssistant.Modules
             }
         }
 
-        public static void FindFitSubGenreAtRandom()
+        private void FindFitSubGenreAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
-            if (!IsSubGenreUnlocked(menu_Dev_Game)) { return; }
+            if (!IsSubGenreUnlocked(_menu_Dev_Game)) { return; }
 
-            Menu_DevGame_Genre menuGenre = guiMain_.uiObjects[61].GetComponent<Menu_DevGame_Genre>();
+            Menu_DevGame_Genre menuGenre = _guiMain.uiObjects[61].GetComponent<Menu_DevGame_Genre>();
             menuGenre.Init(0);
 
             List<Item_DevGame_Genre> validGenres = new List<Item_DevGame_Genre>();
-            int mainGenre = menu_Dev_Game.g_GameMainGenre;
+            int mainGenre = _menu_Dev_Game.g_GameMainGenre;
 
             foreach (Transform child in menuGenre.uiObjects[0].transform)
             {
@@ -121,11 +142,11 @@ namespace GameDevAssistant.Modules
                 if (myGenre == null) { continue; }
                 if(myGenre.myID == mainGenre){ continue; }
 
-                if (myGenre != null && genres_.IsGenreCombination(menu_Dev_Game.g_GameMainGenre, myGenre.myID))
+                if (myGenre != null && _genres.IsGenreCombination(_menu_Dev_Game.g_GameMainGenre, myGenre.myID))
                 {
                     validGenres.Add(myGenre);
                 }
-                else if (menu_Dev_Game.g_GameMainGenre <= 0)
+                else if (_menu_Dev_Game.g_GameMainGenre <= 0)
                 {
                     validGenres.Add(myGenre);
                 }
@@ -136,7 +157,7 @@ namespace GameDevAssistant.Modules
                 int randomIndex = UnityEngine.Random.Range(0, validGenres.Count);
                 Item_DevGame_Genre selectedGenre = validGenres[randomIndex];
                 // ここでselectedGenreを使用して何か処理を行う
-                menu_Dev_Game.SetSubGenre(selectedGenre.myID); // ここでランダムな数字を設定
+                _menu_Dev_Game.SetSubGenre(selectedGenre.myID); // ここでランダムな数字を設定
             }
             else
             {
@@ -144,10 +165,10 @@ namespace GameDevAssistant.Modules
             }
         }
 
-        public static void FindFitMainThemeAtRandom()
+        private void FindFitMainThemeAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
-            Menu_DevGame_Theme menuTheme = guiMain_.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
+            Menu_DevGame_Theme menuTheme = _guiMain.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
             menuTheme.Init(0);
             menuTheme.gameObject.SetActive(true); //検索結果がバグるので、これで対策。
 
@@ -158,11 +179,11 @@ namespace GameDevAssistant.Modules
                 GameObject childObj = child.gameObject;
                 Item_DevGame_Theme myTheme = childObj.GetComponent<Item_DevGame_Theme>();
 
-                if (myTheme != null && themes_.IsThemesFitWithGenre(myTheme.myID, menu_Dev_Game.g_GameMainGenre))
+                if (myTheme != null && _themes.IsThemesFitWithGenre(myTheme.myID, _menu_Dev_Game.g_GameMainGenre))
                 {
                     validTheme.Add(myTheme);
                 }
-                else if (menu_Dev_Game.g_GameMainTheme <= 0)
+                else if (_menu_Dev_Game.g_GameMainTheme <= 0)
                 {
                     validTheme.Add(myTheme);
                 }
@@ -173,7 +194,7 @@ namespace GameDevAssistant.Modules
                 int randomIndex = UnityEngine.Random.Range(0, validTheme.Count);
                 Item_DevGame_Theme selectedTheme = validTheme[randomIndex];
                 // ここでselectedGenreを使用して何か処理を行う
-                menu_Dev_Game.SetMainTheme(selectedTheme.myID); // ここでランダムな数字を設定
+                _menu_Dev_Game.SetMainTheme(selectedTheme.myID); // ここでランダムな数字を設定
             }
             else
             {
@@ -181,17 +202,17 @@ namespace GameDevAssistant.Modules
             }
             menuTheme.gameObject.SetActive(false);//検索結果がバグるので、これで対策。
         }
-        public static void FindFitSubThemeAtRandom()
+        private void FindFitSubThemeAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
-            if (!IsSubThemeUnlocked(menu_Dev_Game)) { return; }
+            if (!IsSubThemeUnlocked(_menu_Dev_Game)) { return; }
 
-            Menu_DevGame_Theme menuTheme = guiMain_.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
+            Menu_DevGame_Theme menuTheme = _guiMain.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
             menuTheme.Init(0);
             menuTheme.gameObject.SetActive(true); //検索結果がバグるので、これで対策。
 
             List<Item_DevGame_Theme> validTheme = new List<Item_DevGame_Theme>();
-            int mainTheme = menu_Dev_Game.g_GameMainTheme;
+            int mainTheme = _menu_Dev_Game.g_GameMainTheme;
 
             foreach (Transform child in menuTheme.uiObjects[0].transform)
             {
@@ -200,11 +221,11 @@ namespace GameDevAssistant.Modules
                 if (myTheme == null) { continue; }
                 if (myTheme.myID == mainTheme) { continue; }
 
-                if (myTheme != null && themes_.IsThemesFitWithGenre(myTheme.myID, menu_Dev_Game.g_GameMainGenre))
+                if (myTheme != null && _themes.IsThemesFitWithGenre(myTheme.myID, _menu_Dev_Game.g_GameMainGenre))
                 {
                     validTheme.Add(myTheme);
                 }
-                else if (menu_Dev_Game.g_GameMainTheme <= 0)
+                else if (_menu_Dev_Game.g_GameMainTheme <= 0)
                 {
                     validTheme.Add(myTheme);
                 }
@@ -215,7 +236,7 @@ namespace GameDevAssistant.Modules
                 int randomIndex = UnityEngine.Random.Range(0, validTheme.Count);
                 Item_DevGame_Theme selectedTheme = validTheme[randomIndex];
                 // ここでselectedGenreを使用して何か処理を行う
-                menu_Dev_Game.SetSubTheme(selectedTheme.myID); // ここでランダムな数字を設定
+                _menu_Dev_Game.SetSubTheme(selectedTheme.myID); // ここでランダムな数字を設定
             }
             else
             {
@@ -224,17 +245,17 @@ namespace GameDevAssistant.Modules
             menuTheme.gameObject.SetActive(false);//検索結果がバグるので、これで対策。
         }
 
-        public static void FindFitAgeTargetGroupAtRandom()
+        private void FindFitAgeTargetGroupAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistAgeTargetEnabled.Value) return;
 
-            Menu_DevGame_Zielgruppe menuAge = guiMain_.uiObjects[60].GetComponent<Menu_DevGame_Zielgruppe>();
+            Menu_DevGame_Zielgruppe menuAge = _guiMain.uiObjects[60].GetComponent<Menu_DevGame_Zielgruppe>();
 
 
             List<int> validAgeIndices = new List<int>();
             for (int i = 0; i < 5; i++)
             {
-                if (genres_.IsTargetGroup(menu_Dev_Game.g_GameMainGenre, i))
+                if (_genres.IsTargetGroup(_menu_Dev_Game.g_GameMainGenre, i))
                 {
                     validAgeIndices.Add(i);
                 }
@@ -244,7 +265,7 @@ namespace GameDevAssistant.Modules
             {
                 int randomIndex = UnityEngine.Random.Range(0, validAgeIndices.Count);
                 int selectedAgeIndex = validAgeIndices[randomIndex];
-                menu_Dev_Game.SetZielgruppe(selectedAgeIndex); // ここでランダムな数字を設定
+                _menu_Dev_Game.SetZielgruppe(selectedAgeIndex); // ここでランダムな数字を設定
             }
             else
             {
@@ -253,7 +274,7 @@ namespace GameDevAssistant.Modules
         }
         //forschungSonstiges - Research Miscellaneous
 
-        private static bool IsSubGenreUnlocked(Menu_DevGame menu) 
+        private bool IsSubGenreUnlocked(Menu_DevGame menu) 
         {
             //forschungSonstiges_
             forschungSonstiges resMis = Traverse.Create(menu).Field("forschungSonstiges_").GetValue<forschungSonstiges>();
@@ -267,7 +288,7 @@ namespace GameDevAssistant.Modules
             }
         }
 
-        private static bool IsSubThemeUnlocked(Menu_DevGame menu)
+        private bool IsSubThemeUnlocked(Menu_DevGame menu)
         {
             //forschungSonstiges_
             forschungSonstiges resMis = Traverse.Create(menu).Field("forschungSonstiges_").GetValue<forschungSonstiges>();

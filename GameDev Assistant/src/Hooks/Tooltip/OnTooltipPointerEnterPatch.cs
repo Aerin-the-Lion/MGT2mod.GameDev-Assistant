@@ -11,16 +11,18 @@ namespace GameDevAssistant
 {
     public partial class Hooks
     {
-        public class OnTooltipPointerEnter
+        public class OnTooltipPointerEnterPatch
         {
+
             [HarmonyLib.HarmonyPostfix]
             [HarmonyLib.HarmonyPatch(typeof(tooltip), "OnPointerEnter")]
             public static void Postfix(tooltip __instance, GUI_Tooltip ___guiTooltip)
             {
+                AssistButtonHandler assistbutton = AssistButtonHandler.Instance;
                 //こうしないと名前が変わらない
-                if (__instance.name == AssistButtonHandler.buttonName)
+                if (__instance.name == assistbutton.ButtonName)
                 {
-                    ___guiTooltip.SetActive(AssistButtonHandler.buttonTooltip);
+                    ___guiTooltip.SetActive(assistbutton.ButtonTooltip);
                 }
             }
         }

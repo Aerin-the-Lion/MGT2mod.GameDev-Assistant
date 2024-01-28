@@ -8,11 +8,11 @@ namespace GameDevAssistant
 {
     public partial class Hooks
     {
-        public class OnGenre
+        public class OnGameDevGenrePatch
         {
             [HarmonyPostfix]
             [HarmonyPatch(typeof(Menu_DevGame_Genre), "Init")]
-            public static void Postfix(Menu_DevGame_Genre __instance, int g, genres ___genres_, Menu_DevGame ___mDevGame_)
+            public static void ColoringGenre(Menu_DevGame_Genre __instance, int g, genres ___genres_, Menu_DevGame ___mDevGame_)
             {
                 if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value || g != 1){return;}
 

@@ -17,7 +17,7 @@ namespace GameDevAssistant
         {
             [HarmonyPostfix]
             [HarmonyPatch(typeof(Menu_DevGame), "BUTTON_AutoDesignSettings")]
-            public static void Postfix(Menu_DevGame __instance, genres ___genres_, int ___g_GameMainGenre, int ___g_GameSubGenre)
+            public static void AlwaysPerfectSlider(Menu_DevGame __instance, genres ___genres_, int ___g_GameMainGenre, int ___g_GameSubGenre)
             {
                 if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistAutoDesignSliderEnabled.Value) { return; }
 

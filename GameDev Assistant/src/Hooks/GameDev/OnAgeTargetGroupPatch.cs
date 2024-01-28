@@ -8,11 +8,11 @@ namespace GameDevAssistant
 {
     public partial class Hooks
     {
-        public class OnAgeTargetGroup
+        public class OnAgeTargetGroupPatch
         {
             [HarmonyPostfix]
             [HarmonyPatch(typeof(Menu_DevGame), "BUTTON_Zielgruppe")]
-            public static void Postfix(Menu_DevGame __instance, genres ___genres_, GUI_Main ___guiMain_)
+            public static void ColoringAgeTargetGroup(Menu_DevGame __instance, genres ___genres_, GUI_Main ___guiMain_)
             {
                 if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistAgeTargetEnabled.Value) { return; }
 
@@ -43,7 +43,7 @@ namespace GameDevAssistant
 
                 }catch(System.Exception e)
                 {
-                    Debug.LogWarning(nameof(OnAgeTargetGroup) + " : " + e);
+                    Debug.LogWarning(nameof(OnAgeTargetGroupPatch) + " : " + e);
                     Debug.LogAssertion(e.StackTrace);
                 }
             }

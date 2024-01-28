@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 namespace GameDevAssistant
 {
@@ -73,6 +75,44 @@ namespace GameDevAssistant
                     break;
             }
             return color;
+        }
+        public static int GetPlatformFilter(string filterName)
+        {
+            int filter = 0;
+            switch (filterName)
+            {
+                case "Name":
+                    filter = 0;
+                    break;
+                case "Manufacturer":
+                    filter = 1;
+                    break;
+                case "ReleaseDate":
+                    filter = 2;
+                    break;
+                case "TechnologyLevel":
+                    filter = 3;
+                    break;
+                case "PurchasePrice":
+                    filter = 4;
+                    break;
+                case "MarketShare":
+                    filter = 5;
+                    break;
+                case "AvailableGames":
+                    filter = 6;
+                    break;
+                case "DevelopmentCosts":
+                    filter = 7;
+                    break;
+                case "PlatformType":
+                    filter = 8;
+                    break;
+                case "ActiveUsers":
+                    filter = 9;
+                    break;
+            }
+            return filter;
         }
     }
 }

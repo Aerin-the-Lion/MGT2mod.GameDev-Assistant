@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 
 namespace GameDevAssistant.Modules
 {
-    public class AssistManager
+    public class AssistButtonManager
     {
         public static void Init()
         {
             if (!ConfigManager.IsModEnabled.Value) { return; }
 
-            AssistButtonHandler.AddAssistButtonToGameDevMenu();
+            AssistButtonHandler assistbutton = AssistButtonHandler.Instance;
+            assistbutton.AddButton();
         }
     }
 }

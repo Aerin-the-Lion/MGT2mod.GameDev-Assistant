@@ -36,6 +36,32 @@ namespace GameDevAssistant.Config
             Yellow
         }
 
+        private enum PlatformFilterOptions
+        {
+            /*
+ * 0 Name
+ * 1 Manufacturer
+ * 2 Release Date
+ * 3 Technology level
+ * 4 Purchase price
+ * 5 Market share
+ * 6 Available Games
+ * 7 Development costs
+ * 8 Platform type
+ * 9 Active users
+ */
+            Name,
+            Manufacturer,
+            ReleaseDate,
+            TechnologyLevel,
+            PurchasePrice,
+            MarketShare,
+            AvailableGames,
+            DevelopmentCosts,
+            PlatformType,
+            ActiveUsers
+        }
+
         /// <summary>
         /// Constructor with LoadConfig
         /// </summary>
@@ -80,7 +106,11 @@ namespace GameDevAssistant.Config
 
         public static ConfigEntry<bool> IsPinnedMainGenreEnabled { get; private set; }
 
-        // -----------------------------------------------------------------------------
+        // Platform Config ------------------------------------------------------------
+
+        public static ConfigEntry<bool> IsAssistPlatformEnabled { get; private set; }
+
+
 
         private static ConfigEntry<ColorOptions> ListColorGood { get; set; }
         private static ConfigEntry<ColorOptions> ListColorNormal { get; set; }
@@ -90,6 +120,11 @@ namespace GameDevAssistant.Config
         public static Color ColorNormal { get; private set; }
         public static Color ColorGoodSelected { get; private set; }
         public static Color ColorNormalSelected { get; private set; }
+
+        // -----------------------------------------------------------------------------
+
+        private static ConfigEntry<PlatformFilterOptions> ListPlatformFilter { get; set; }
+        public static int PlatformFilter { get; private set; }
         
         /// <summary>
         /// Loading when the game starts
@@ -153,6 +188,15 @@ namespace GameDevAssistant.Config
                 true,
                 "Enabling this option, the main genre in the genre menu is no longer changed when you're pushed the assist button.");
 
+            // Platform Config
+
+            IsAssistPlatformEnabled = ConfigFile.Bind(
+                AssistButtonSettingSection,
+                "Assist Platform",
+                true,
+                "Enabling this option assists with the Platform selection in the platform menu.");
+
+
             // ----------------------------------------------------------------------------------------------------------------
 
             // Color Settings
@@ -180,8 +224,16 @@ namespace GameDevAssistant.Config
                 ColorOptions.Grey,
                 new ConfigDescription("Color indicating a normal or neutral fit with the genre when selected"));
 
+            // ----------------------------------------------------------------------------------------------------------------
+
+            ListPlatformFilter = ConfigFile.Bind(
+                AssistButtonSettingSection,
+                "Platform Filter",
+                PlatformFilterOptions.MarketShare,
+                new ConfigDescription("Filter for the platform selection in the game dev of platform selection menu"));
+
             // =============================================================================================================
-            SetColorSetting();
+            InitDropdownSets();
             // Config setting event handlers here
             ConfigFile.SettingChanged += OnConfigSettingChanged;
             // =============================================================================================================
@@ -197,7 +249,17 @@ namespace GameDevAssistant.Config
 #if DEBUG
             Debug.Log(GameDevAssistant.PluginName + " : Config setting is changed");
 #endif
+            InitDropdownSets();
+        }
+
+        /// <summary>
+        /// ドロップダウンリストの設定を初期化する
+        /// in English: Initialize the dropdown list settings
+        /// </summary>
+        public void InitDropdownSets()
+        {
             SetColorSetting();
+            SetPlatformFilter();
         }
 
         private void SetColorSetting()
@@ -206,6 +268,11 @@ namespace GameDevAssistant.Config
             ColorNormal = Helper.GetColor(ListColorNormal.Value.ToString());
             ColorGoodSelected = Helper.GetColor(ListColorGoodSelected.Value.ToString());
             ColorNormalSelected = Helper.GetColor(ListColorNormalSelected.Value.ToString());
+        }
+
+        public void SetPlatformFilter()
+        {
+            PlatformFilter = Helper.GetPlatformFilter(ListPlatformFilter.Value.ToString());
         }
     }
 }

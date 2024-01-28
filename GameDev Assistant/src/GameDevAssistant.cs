@@ -24,12 +24,12 @@ namespace GameDevAssistant
         {
             Logger.LogInfo(nameof(LoadHooks));
             Harmony.CreateAndPatchAll(typeof(Hooks), PluginGuid);
-            Harmony.CreateAndPatchAll(typeof(Hooks.OnTheme), PluginGuid);
-            Harmony.CreateAndPatchAll(typeof(Hooks.OnGenre), PluginGuid);
-            Harmony.CreateAndPatchAll(typeof(Hooks.OnAgeTargetGroup), PluginGuid);
+            Harmony.CreateAndPatchAll(typeof(Hooks.OnGameDevThemePatch), PluginGuid);
+            Harmony.CreateAndPatchAll(typeof(Hooks.OnGameDevGenrePatch), PluginGuid);
+            Harmony.CreateAndPatchAll(typeof(Hooks.OnAgeTargetGroupPatch), PluginGuid);
             Harmony.CreateAndPatchAll(typeof(Hooks.OnAutoDesignSlider), PluginGuid);
-            Harmony.CreateAndPatchAll(typeof(Hooks.OnStart), PluginGuid);
-            Harmony.CreateAndPatchAll(typeof(Hooks.OnTooltipPointerEnter), PluginGuid);
+            Harmony.CreateAndPatchAll(typeof(Hooks.OnStartPatch), PluginGuid);
+            Harmony.CreateAndPatchAll(typeof(Hooks.OnTooltipPointerEnterPatch), PluginGuid);
         }
     }
 }

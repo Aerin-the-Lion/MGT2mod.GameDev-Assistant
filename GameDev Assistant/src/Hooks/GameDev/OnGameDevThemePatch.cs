@@ -7,12 +7,12 @@ namespace GameDevAssistant
 {
     public partial class Hooks
     {
-        public class OnTheme
+        public class OnGameDevThemePatch
         {
             [HarmonyPostfix]
             [HarmonyPatch(typeof(Menu_DevGame_Theme), "Init")]
             [HarmonyPatch(typeof(Menu_DevGame_Theme), "BUTTON_Search")]
-            public static void Postfix(Menu_DevGame_Theme __instance, themes ___themes_, Menu_DevGame ___mDevGame_)
+            public static void ColoringTheme(Menu_DevGame_Theme __instance, themes ___themes_, Menu_DevGame ___mDevGame_)
             {
                 if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) { return; }
 

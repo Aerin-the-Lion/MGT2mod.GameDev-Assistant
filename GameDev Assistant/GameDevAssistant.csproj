@@ -71,18 +71,25 @@
     <Compile Include="src\GameDevAssistant.Hepler.cs" />
     <Compile Include="src\Config\ConfigManager.cs" />
     <Compile Include="src\GameDevAssistant.cs" />
-    <Compile Include="src\Hooks\OnAgeTargetGroup.cs" />
-    <Compile Include="src\Hooks\OnAutoDesignSlider.cs" />
-    <Compile Include="src\Hooks\OnTooltipPointerEnter.cs" />
-    <Compile Include="src\Hooks\OnStart.cs" />
-    <Compile Include="src\Hooks\OnGenre.cs" />
-    <Compile Include="src\Hooks\OnTheme.cs" />
-    <Compile Include="src\Modules\AssistManager.cs" />
-    <Compile Include="src\Modules\AssistButtonHandler.cs" />
-    <Compile Include="src\Modules\AssistFeatures.cs" />
+    <Compile Include="src\Hooks\GameDev\OnPlatformPatch.cs" />
+    <Compile Include="src\Hooks\GameDev\OnAgeTargetGroupPatch.cs" />
+    <Compile Include="src\Hooks\GameDev\OnAutoDesignSliderPatch.cs" />
+    <Compile Include="src\Hooks\Tooltip\OnTooltipPointerEnterPatch.cs" />
+    <Compile Include="src\Hooks\General\OnStartPatch.cs" />
+    <Compile Include="src\Hooks\GameDev\OnGameDevGenrePatch.cs" />
+    <Compile Include="src\Hooks\GameDev\OnGameDevThemePatch.cs" />
+    <Compile Include="src\Modules\AssistButton\AssistButtonManager.cs" />
+    <Compile Include="src\Modules\AssistButton\AssistButtonHandler.cs" />
+    <Compile Include="src\Modules\AssistButton\AssistButtonFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\AutomaticPlatform.cs" />
+    <Compile Include="src\Modules\Base\ButtonHandlerBase.cs" />
+    <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonManager.cs" />
+    <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonFeatures.cs" />
+    <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
