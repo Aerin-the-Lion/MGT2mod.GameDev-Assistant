@@ -13,6 +13,7 @@ namespace GameDevAssistant.Modules
         private genres _genres;
         private themes _themes;
         private GUI_Main _guiMain;
+        public enum PlatformSlots { Four = 4 }
 
         private static AssistButtonFeatures _instance { get; set; }
 
@@ -54,9 +55,14 @@ namespace GameDevAssistant.Modules
 
         public void Init()
         {
-            if (!ConfigManager.IsModEnabled.Value) { return; }
             FindScripts();
             _isInitPlatform = false;
+        }
+
+        public void SetFeatures()
+        {
+            if (!ConfigManager.IsModEnabled.Value) { return; }
+            Init();
 
             //名前自動化
             if (ConfigManager.IsAssistRandomNameEnabled.Value)
@@ -65,15 +71,15 @@ namespace GameDevAssistant.Modules
             }
 
             //ジャンル自動化
-            FindFitMainGenreAtRandom();
-            FindFitSubGenreAtRandom();
+            SetFitMainGenreAtRandom();
+            SetFitSubGenreAtRandom();
 
             //テーマ自動化
-            FindFitMainThemeAtRandom();
-            FindFitSubThemeAtRandom();
+            SetFitMainThemeAtRandom();
+            SetFitSubThemeAtRandom();
 
             //ターゲット年齢自動化
-            FindFitAgeTargetGroupAtRandom();
+            SetFitAgeTargetGroupAtRandom();
 
             //デザイン設定自動化
             if (ConfigManager.IsAssistAutoDesignSliderEnabled.Value)
@@ -82,14 +88,14 @@ namespace GameDevAssistant.Modules
             }
 
             //プラットフォーム自動化
-            for(int i = 0; i < 3; i++)
+            for(int i = 0; i < (int)PlatformSlots.Four; i++)
             {
                 InitializePlatformSelection(i, false);
             }
         }
 
 
-        private void FindFitMainGenreAtRandom()
+        private void SetFitMainGenreAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
             if (ConfigManager.IsPinnedMainGenreEnabled.Value && _menu_Dev_Game.g_GameMainGenre > 0) return;
@@ -124,7 +130,7 @@ namespace GameDevAssistant.Modules
             }
         }
 
-        private void FindFitSubGenreAtRandom()
+        private void SetFitSubGenreAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
             if (!IsSubGenreUnlocked(_menu_Dev_Game)) { return; }
@@ -165,7 +171,7 @@ namespace GameDevAssistant.Modules
             }
         }
 
-        private void FindFitMainThemeAtRandom()
+        private void SetFitMainThemeAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
             Menu_DevGame_Theme menuTheme = _guiMain.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
@@ -202,7 +208,7 @@ namespace GameDevAssistant.Modules
             }
             menuTheme.gameObject.SetActive(false);//検索結果がバグるので、これで対策。
         }
-        private void FindFitSubThemeAtRandom()
+        private void SetFitSubThemeAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
             if (!IsSubThemeUnlocked(_menu_Dev_Game)) { return; }
@@ -245,7 +251,7 @@ namespace GameDevAssistant.Modules
             menuTheme.gameObject.SetActive(false);//検索結果がバグるので、これで対策。
         }
 
-        private void FindFitAgeTargetGroupAtRandom()
+        private void SetFitAgeTargetGroupAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistAgeTargetEnabled.Value) return;
 

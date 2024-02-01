@@ -24,6 +24,11 @@ namespace GameDevAssistant
                 {
                     ___guiTooltip.SetActive(assistbutton.ButtonTooltip);
                 }
+                PlatformsButtonHandler platformsbutton = PlatformsButtonHandler.Instance;
+                if (__instance.name == platformsbutton.ButtonName)
+                {
+                    ___guiTooltip.SetActive(platformsbutton.ButtonTooltip);
+                }
             }
         }
     }

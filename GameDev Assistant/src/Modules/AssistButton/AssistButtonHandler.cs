@@ -119,7 +119,7 @@ namespace GameDevAssistant.Modules
             base.OnButtonClicked();
             // AssistButton特有の処理をここに書く
             AssistButtonFeatures features = AssistButtonFeatures.Instance;
-            features.Init();
+            features.SetFeatures();
         }
     }
 }

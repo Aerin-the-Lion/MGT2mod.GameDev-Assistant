@@ -12,7 +12,19 @@ namespace GameDevAssistant.Config
     {
         private ConfigFile ConfigFile { get; set; }
 
-        //For Unity Default Color List
+        /// <summary>
+        /// Constructor with LoadConfig
+        /// </summary>
+        /// <param name="configFile"></param>
+        public ConfigManager(ConfigFile configFile)
+        {
+            ConfigFile = configFile;
+            LoadConfig();
+        }
+
+        // =============================================================================================================
+        // Enums
+        // =============================================================================================================
         private enum ColorOptions
         {
             Black,
@@ -62,14 +74,12 @@ namespace GameDevAssistant.Config
             ActiveUsers
         }
 
-        /// <summary>
-        /// Constructor with LoadConfig
-        /// </summary>
-        /// <param name="configFile"></param>
-        public ConfigManager(ConfigFile configFile)
+        private enum PlatformTypeOptions
         {
-            ConfigFile = configFile;
-            LoadConfig();
+            Multiplatform = 0,
+            Exclusive = 1,
+            Manufacturer = 2,
+            Retro = 3
         }
 
         // =============================================================================================================
@@ -109,9 +119,15 @@ namespace GameDevAssistant.Config
         // Platform Config ------------------------------------------------------------
 
         public static ConfigEntry<bool> IsAssistPlatformEnabled { get; private set; }
+        private static ConfigEntry<PlatformFilterOptions> ListPlatformFilter { get; set; }
+        public static int PlatformFilter { get; private set; }
+
+        private static ConfigEntry<PlatformTypeOptions> ListPlatformType { get; set; }
+        public static int PlatformType { get; private set; }
 
 
 
+        // Color Config ---------------------------------------------------------------
         private static ConfigEntry<ColorOptions> ListColorGood { get; set; }
         private static ConfigEntry<ColorOptions> ListColorNormal { get; set; }
         private static ConfigEntry<ColorOptions> ListColorGoodSelected { get; set; }
@@ -122,10 +138,10 @@ namespace GameDevAssistant.Config
         public static Color ColorNormalSelected { get; private set; }
 
         // -----------------------------------------------------------------------------
+        // =============================================================================================================
 
-        private static ConfigEntry<PlatformFilterOptions> ListPlatformFilter { get; set; }
-        public static int PlatformFilter { get; private set; }
-        
+
+        // =============================================================================================================
         /// <summary>
         /// Loading when the game starts
         /// </summary>
@@ -232,6 +248,12 @@ namespace GameDevAssistant.Config
                 PlatformFilterOptions.MarketShare,
                 new ConfigDescription("Filter for the platform selection in the game dev of platform selection menu"));
 
+            ListPlatformType = ConfigFile.Bind(
+                AssistButtonSettingSection,
+                "Platform Type",
+                PlatformTypeOptions.Multiplatform,
+                new ConfigDescription("Platform type for the platform selection in the game dev of platform selection menu"));
+
             // =============================================================================================================
             InitDropdownSets();
             // Config setting event handlers here
@@ -260,6 +282,7 @@ namespace GameDevAssistant.Config
         {
             SetColorSetting();
             SetPlatformFilter();
+            SetPlatformType();
         }
 
         private void SetColorSetting()
@@ -273,6 +296,10 @@ namespace GameDevAssistant.Config
         public void SetPlatformFilter()
         {
             PlatformFilter = Helper.GetPlatformFilter(ListPlatformFilter.Value.ToString());
+        }
+        public void SetPlatformType()
+        {
+            PlatformType = (int)ListPlatformType.Value;
         }
     }
 }

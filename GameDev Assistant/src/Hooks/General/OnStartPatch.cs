@@ -14,18 +14,22 @@ namespace GameDevAssistant
     {
         public class OnStartPatch
         {
-            [HarmonyPostfix, HarmonyLib.HarmonyPatch(typeof(savegameScript), "LoadTasks")]
-            public static void Postfix()
+            private static void Init()
             {
                 AssistButtonManager.Init();
+                PlatformsButtonManager.Init();
                 SelectButtonManager.Init();
+            }
+            [HarmonyPostfix, HarmonyLib.HarmonyPatch(typeof(savegameScript), "LoadTasks")]
+            private static void Postfix()
+            {
+                Init();
             }
             [HarmonyPostfix]
             [HarmonyLib.HarmonyPatch(typeof(Menu_NewGame), "OnEnable")]
-            public static void Postfix2()
+            private static void Postfix2()
             {
-                AssistButtonManager.Init();
-                SelectButtonManager.Init();
+                Init();
             }
         }
     }

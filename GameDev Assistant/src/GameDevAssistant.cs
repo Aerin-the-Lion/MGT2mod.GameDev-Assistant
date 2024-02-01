@@ -12,7 +12,7 @@ namespace GameDevAssistant
     {
         public const string PluginGuid = "me.Aerin.MGT2mod.GameDevAssistant";
         public const string PluginName = "GameDev Assistant";
-        public const string PluginVersion = "1.0.1.0";
+        public const string PluginVersion = "1.0.2.0";
 
         void Awake()
         {
