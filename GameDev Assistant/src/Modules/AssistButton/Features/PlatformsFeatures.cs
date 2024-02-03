@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameDevAssistant.Modules
+namespace GameDevAssistant.Modules.AssistButton
 {
     public partial class AssistButtonFeatures
     {

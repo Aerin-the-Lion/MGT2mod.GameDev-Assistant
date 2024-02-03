@@ -81,9 +81,13 @@
     <Compile Include="src\Modules\AssistButton\AssistButtonManager.cs" />
     <Compile Include="src\Modules\AssistButton\AssistButtonHandler.cs" />
     <Compile Include="src\Modules\AssistButton\AssistButtonFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\Helper.cs" />
+    <Compile Include="src\Modules\AssistButton\Features\AgeTargetGroupFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\Features\ThemesFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\Features\GenresFeatures.cs" />
     <Compile Include="src\Modules\AssistButton\PlatformButton\PlatformsButtonHandler.cs" />
     <Compile Include="src\Modules\AssistButton\PlatformButton\PlatformsButtonManager.cs" />
-    <Compile Include="src\Modules\AssistButton\PlatformFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\Features\PlatformsFeatures.cs" />
     <Compile Include="src\Modules\Base\ButtonHandlerBase.cs" />
     <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonManager.cs" />
     <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonFeatures.cs" />

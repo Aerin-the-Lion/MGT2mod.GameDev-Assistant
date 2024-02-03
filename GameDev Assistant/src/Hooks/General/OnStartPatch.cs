@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GameDevAssistant.Config;
 using GameDevAssistant.Modules;
+using GameDevAssistant.Modules.AssistButton;
 using GameDevAssistant.Modules.PlatformHistory;
 using HarmonyLib;
 

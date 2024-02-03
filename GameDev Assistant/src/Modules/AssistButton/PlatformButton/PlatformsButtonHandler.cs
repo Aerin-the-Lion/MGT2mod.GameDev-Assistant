@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine.UI;
 using UnityEngine;
 using GameDevAssistant.Config;
+using GameDevAssistant.Modules.AssistButton;
 
 namespace GameDevAssistant.Modules
 {
@@ -36,15 +37,15 @@ namespace GameDevAssistant.Modules
         protected override void CustomizePlacedButton(GameObject button)
         {
             base.CustomizePlacedButton(button);
-            myButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(570.0f, 140.0f);
+            myButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(600.0f, 470.0f);
         }
 
         protected override void OnButtonClicked()
         {
             base.OnButtonClicked();
             // AssistButton特有の処理をここに書く
-            AssistButtonFeatures features = AssistButtonFeatures.Instance;
             if (!ConfigManager.IsModEnabled.Value) { return; }
+            AssistButtonFeatures features = AssistButtonFeatures.Instance;
             features.Init();
 
             //プラットフォーム自動化

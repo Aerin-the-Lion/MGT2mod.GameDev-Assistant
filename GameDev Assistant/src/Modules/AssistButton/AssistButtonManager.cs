@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameDevAssistant.Modules
+namespace GameDevAssistant.Modules.AssistButton
 {
     public class AssistButtonManager
     {
