@@ -20,7 +20,7 @@ namespace GameDevAssistant.Modules.AssistButton
             // Early return
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
             //check if the button is interactable
-            bool isButtonInteractable = Helper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_MAIN_THEME);
+            bool isButtonInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_MAIN_THEME);
             if (!isButtonInteractable) { return; }
             // ---------------------------------------------------------------------------------------
             Menu_DevGame_Theme menuTheme = _guiMain.uiObjects[62].GetComponent<Menu_DevGame_Theme>();
@@ -63,7 +63,7 @@ namespace GameDevAssistant.Modules.AssistButton
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistThemeEnabled.Value) return;
             if (!IsSubThemeUnlocked(_menu_Dev_Game)) { return; }
             //check if the button is interactable
-            bool isButtonInteractable = Helper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_SUB_THEME);
+            bool isButtonInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_SUB_THEME);
             if (!isButtonInteractable) { return; }
             // ---------------------------------------------------------------------------------------
             Menu_DevGame_Theme menuTheme = _guiMain.uiObjects[62].GetComponent<Menu_DevGame_Theme>();

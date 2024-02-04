@@ -12,6 +12,8 @@ namespace GameDevAssistant.Modules.AssistButton
 {
     public partial class AssistButtonFeatures
     {
+        public const string PLATFORM_BUTTON_NAME = "Button_Platform";
+
         private bool _isInitPlatform = false;
 
         /// <summary>
@@ -24,7 +26,7 @@ namespace GameDevAssistant.Modules.AssistButton
             if (!IsPlatformSelectionEnabled()) return;
 
             //各スロットがアンロックされているかどうかを確認する
-            bool[] isUnlocked = IsSlotsUnlocked();
+            bool[] isUnlocked = IsSlotsUnlocked(platformSlot);
             if (!isUnlocked[platformSlot]) { return; }
 
             //Exclusive Platformの場合、Main Platformのみを選択する
@@ -46,7 +48,7 @@ namespace GameDevAssistant.Modules.AssistButton
            menuPlatform.gameObject.SetActive(false);
         }
 
-        private bool IsPlatformSelectionEnabled() => ConfigManager.IsModEnabled.Value && ConfigManager.IsAssistPlatformEnabled.Value;
+        private bool IsPlatformSelectionEnabled() => ConfigManager.IsModEnabled.Value;
 
         private Menu_DevGame_Platform GetMenuPlatform(int platformSlot)
         {
@@ -61,7 +63,7 @@ namespace GameDevAssistant.Modules.AssistButton
             SetPlatformType(ConfigManager.PlatformType);
             menuPlatform.Init(platformSlot);
             menuPlatform.gameObject.SetActive(true);
-            SetFilter(menuPlatform, ConfigManager.PlatformFilter);
+            SetPlatformsFilter(menuPlatform, ConfigManager.PlatformFilter);
             menuPlatform.DROPDOWN_Sort();
         }
 
@@ -77,71 +79,28 @@ namespace GameDevAssistant.Modules.AssistButton
         private Item_DevGame_Platform ChooseRandomPlatform(List<Item_DevGame_Platform> platforms) => 
             platforms[UnityEngine.Random.Range(0, platforms.Count)];
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="platformSlot"></param>
-    private void FindFitPlatform(int platformSlot) 
-    {
-        if (!ConfigManager.IsModEnabled.Value && !ConfigManager.IsAssistPlatformEnabled.Value) return;
-        Menu_DevGame_Platform menuPlatform = _guiMain.uiObjects[66].GetComponent<Menu_DevGame_Platform>();
-        menuPlatform.Init(platformSlot);
-        SetFilter(menuPlatform, ConfigManager.PlatformFilter);
-        menuPlatform.DROPDOWN_Sort();
-
-        //初期化
-        _menu_Dev_Game.g_GamePlatform = InitExistPlatforms(_menu_Dev_Game.g_GamePlatform);
-
-        List<Item_DevGame_Platform> validPlatform = new List<Item_DevGame_Platform>();
-
-        //まず最初に、該当のFitするプラットフォームを探し、それをリストに追加する
-        foreach (Transform child in menuPlatform.uiObjects[0].transform)
-        {
-            GameObject childObj = child.gameObject;
-            Item_DevGame_Platform myPlatform = childObj.GetComponent<Item_DevGame_Platform>();
-
-            if (myPlatform != null && !IsExistSamePlatforms(myPlatform.myID))
-            {
-                validPlatform.Add(myPlatform);
-            }
-        }
-
-        //該当が見つかった場合、その中からランダムに選択する
-        if (validPlatform.Count > 0)
-        {
-            Item_DevGame_Platform selectedPlatform = validPlatform[0];
-            // ここでselectedGenreを使用して何か処理を行う
-            _menu_Dev_Game.SetPlatform(menuPlatform.platformNR, selectedPlatform.myID); // ここでランダムな数字を設定
-        }
-        else
-        {
-            // 対象となるジャンルが見つからなかった場合の処理
-        }
-
-    }
-
-    /*
-     * 0 Name
-     * 1 Manufacturer
-     * 2 Release Date
-     * 3 Technology level
-     * 4 Purchase price
-     * 5 Market share
-     * 6 Available Games
-     * 7 Development costs
-     * 8 Platform type
-     * 9 Active users
-     */
+        /*
+         * 0 Name
+         * 1 Manufacturer
+         * 2 Release Date
+         * 3 Technology level
+         * 4 Purchase price
+         * 5 Market share
+         * 6 Available Games
+         * 7 Development costs
+         * 8 Platform type
+         * 9 Active users
+         */
 
 
-    /// <summary>
-    /// プラットフォームのフィルターを設定する
-    /// in English: Set the platform filter with the specified filter ID
-    /// (0 : Name, 1 : Manufacturer, 2: Release Date...)
-    /// </summary>
-    /// <param name="menuPlatform"></param>
-    /// <param name="filterId"></param>
-    private void SetFilter(Menu_DevGame_Platform menuPlatform, int filterId)
+        /// <summary>
+        /// プラットフォームのフィルターを設定する
+        /// in English: Set the platform filter with the specified filter ID
+        /// (0 : Name, 1 : Manufacturer, 2: Release Date...)
+        /// </summary>
+        /// <param name="menuPlatform"></param>
+        /// <param name="filterId"></param>
+        private void SetPlatformsFilter(Menu_DevGame_Platform menuPlatform, int filterId)
         {
             //Debug.Log("SetFilter");
             //Debug.Log("filterId : " + filterId);
@@ -172,23 +131,30 @@ namespace GameDevAssistant.Modules.AssistButton
         /// in english: 0 = Free Slot (unlocked from the beginning), 1 = 28, 2 = 29, 3 = 30
         /// </summary>
         /// <returns></returns>
-        private bool[] IsSlotsUnlocked()
+        private bool[] IsSlotsUnlocked(int slot)
         {
             bool[] isUnlocked = new bool[4];
             forschungSonstiges resMis = Traverse.Create(_menu_Dev_Game).Field("forschungSonstiges_").GetValue<forschungSonstiges>();
 
-            //元から開放されている。
-            isUnlocked[0] = true;
+            //実際にロックされているかどうかを確認する
+            string buttonName = PLATFORM_BUTTON_NAME + (slot + 1).ToString();
+            bool isInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, buttonName);
 
-            if (resMis != null && resMis.IsErforscht(28))
+            //元から開放されている。
+            if(isInteractable)
+            {
+                isUnlocked[0] = true;
+            }
+
+            if (resMis != null && resMis.IsErforscht(28) && isInteractable)
             {
                 isUnlocked[1] = true ;
             }
-            if (resMis != null && resMis.IsErforscht(29))
+            if (resMis != null && resMis.IsErforscht(29) && isInteractable)
             {
                 isUnlocked[2] = true;
             }
-            if (resMis != null && resMis.IsErforscht(30))
+            if (resMis != null && resMis.IsErforscht(30) && isInteractable)
             {
                 isUnlocked[3] = true;
             }
@@ -237,7 +203,6 @@ namespace GameDevAssistant.Modules.AssistButton
         private bool IsArcadeCabinetGame()
         {
             string myName = _menu_Dev_Game.uiObjects[146].transform.Find("Label").gameObject.GetComponent<Text>().text;
-            Debug.Log("myName : " + myName);
             if(myName == "Arcade Cabinet")
             {
                 return true;

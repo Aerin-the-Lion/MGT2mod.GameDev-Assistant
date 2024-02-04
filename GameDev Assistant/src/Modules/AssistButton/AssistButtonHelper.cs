@@ -9,7 +9,7 @@ using System.Runtime.Remoting.Messaging;
 
 namespace GameDevAssistant.Modules.AssistButton
 {
-    public class Helper
+    public class AssistButtonHelper
     {
         /// <summary>
         /// buttonの状態をチェックする
@@ -38,37 +38,55 @@ namespace GameDevAssistant.Modules.AssistButton
             return false;
         }
 
-        public static bool IsInteractableUIObjectByName<T>(GameObject[] uiObjects, string name) where T : MonoBehaviour
+        public static bool IsInteractableUIObjectByName<T>(GameObject[] objs, string name) where T : MonoBehaviour
         {
             // Find a child object with the specified name
-            GameObject uiObject = FindUIObjectByName(uiObjects, name);
+            GameObject obj = FindUIObjectByName(objs, name);
 
             // Error handling if the child object is not found
-            if (uiObject == null)
+            if (obj == null)
             {
-                Debug.LogError($"Child object '{name}' not found in {uiObject.name}.");
+                Debug.LogError($"Child object '{name}' not found in {obj.name}.");
                 return false;
             }
 
             // Get the component of the specified type from the child object
-            T component = uiObject.GetComponent<T>();
+            T component = obj.GetComponent<T>();
             if (component != null)
             {
-                if (component is Button button)
-                {
-                    return button.interactable;
-                }
-                if (component is Slider slider)
-                {
-                    return slider.interactable;
-                }
-                else if (component is Toggle toggle)
-                {
-                    return toggle.interactable;
-                }
-                // Add here if you need to check for other component types
+                return IsComponentInteractable(component);
+            }
+            else
+            {
+                T componentInChild = obj.GetComponentInChildren<T>();
+                //Debug.LogError($"The component of child of '{name}' not found in {obj.name}.");
+                return IsComponentInteractable(componentInChild);
             }
             // If the component is not found or does not match the check condition, return false
+        }
+
+        private static bool IsComponentInteractable(Component component)
+        {
+            if (component is Button button)
+            {
+                return button.interactable;
+            }
+            if (component is Slider slider)
+            {
+                return slider.interactable;
+            }
+            else if (component is Toggle toggle)
+            {
+                return toggle.interactable;
+            }
+            else if (component is InputField input)
+            {
+                return input.interactable;
+            }
+            // Add here if you need to check for other component types
+
+            // ここに到達した場合、サポートされていないコンポーネントタイプであるため、falseを返すか、
+            // 他の適切なデフォルト値や処理をここで行う。
             return false;
         }
 

@@ -1,4 +1,6 @@
-﻿using System.Data;
+﻿using BepInEx;
+using System.Data;
+using System.IO;
 using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,8 +22,9 @@ namespace GameDevAssistant.Modules
         protected virtual string MainGamePath => "CanvasInGameMenu";
         protected virtual string GameObjectPath => "CanvasInGameMenu/Menu_Dev_Game";
         protected virtual string OrgButtonPath => "WindowMain/Seite4/Button_AutoDesingSettings";
-
         protected virtual string MyButtonPath => "CanvasInGameMenu/Menu_Dev_Game/WindowMain/Seite1/";
+        protected virtual string PicturePath => "GameDevAssistant/AssistButton";
+        protected virtual string PictureName => null;
 
         /// <summary>
         /// 派生クラスによってクローン化されたボタンをゲーム内に追加します。
@@ -51,6 +54,7 @@ namespace GameDevAssistant.Modules
         {
             button.name = ButtonName;
             CustomizePlacedButton(button);
+            CustomizeImage(button);
         }
 
         protected virtual void SetButtonTooltip()
@@ -70,6 +74,34 @@ namespace GameDevAssistant.Modules
                 rt.anchorMin = new Vector2(0.0f, 0.0f);
                 rt.anchorMax = new Vector2(0.0f, 0.0f);
                 rt.anchoredPosition = new Vector2(0.0f, 0.0f);
+            }
+        }
+
+        /// <summary>
+        /// BepInExのプラグインフォルダから画像を読み込んでボタンの画像を変更します。
+        /// Load an image from the BepInEx plugin folder and change the button image.
+        /// </summary>
+        /// <param name="button"></param>
+        protected virtual void CustomizeImage(GameObject button)
+        {
+            if(PictureName == null) { return; }
+            // 画像を変更する処理
+            string imagePath = Path.Combine(Paths.PluginPath, PicturePath, PictureName);
+            byte[] imageBytes = System.IO.File.ReadAllBytes(imagePath);
+            Texture2D texture = new Texture2D(2, 2); // サイズは適当でOK、LoadImageが適切にリサイズする
+            if (texture.LoadImage(imageBytes))
+            {
+                // 新しい非圧縮テクスチャを作成
+                Texture2D uncompressedTexture = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+                uncompressedTexture.SetPixels(texture.GetPixels());
+                uncompressedTexture.filterMode = FilterMode.Point;
+                uncompressedTexture.Apply();
+                myButton.transform.GetChild(0).GetComponent<Image>().sprite = 
+                    Sprite.Create(uncompressedTexture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+            }
+            else
+            {
+                Debug.LogError("画像のロードに失敗しました: " + PictureName);
             }
         }
 

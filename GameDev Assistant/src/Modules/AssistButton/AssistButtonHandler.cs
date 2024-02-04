@@ -1,4 +1,6 @@
-﻿using GameDevAssistant.Config;
+﻿using BepInEx;
+using GameDevAssistant.Config;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -94,6 +96,8 @@ namespace GameDevAssistant.Modules.AssistButton
         protected override string OrgButtonPath => "WindowMain/Seite4/Button_AutoDesingSettings";
 
         protected override string MyButtonPath => "Menu_Dev_Game/WindowMain/Seite1/";
+        protected override string PicturePath => "GameDevAssistant/AssistButton";
+        protected override string PictureName => "iconAssistButton.png";
 
         private static AssistButtonHandler instance;
         public static AssistButtonHandler Instance
@@ -119,7 +123,7 @@ namespace GameDevAssistant.Modules.AssistButton
             base.OnButtonClicked();
             // AssistButton特有の処理をここに書く
             AssistButtonFeatures features = AssistButtonFeatures.Instance;
-            features.SetFeatures();
+            features.SetAssistAutomationFeatures();
         }
     }
 }

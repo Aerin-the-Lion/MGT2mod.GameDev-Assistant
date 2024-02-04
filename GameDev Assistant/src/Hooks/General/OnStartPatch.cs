@@ -19,6 +19,7 @@ namespace GameDevAssistant
             {
                 AssistButtonManager.Init();
                 PlatformsButtonManager.Init();
+                LicenceButtonManager.Init();
                 SelectButtonManager.Init();
             }
             [HarmonyPostfix, HarmonyLib.HarmonyPatch(typeof(savegameScript), "LoadTasks")]

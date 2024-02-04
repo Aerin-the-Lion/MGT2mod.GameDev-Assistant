@@ -3,6 +3,7 @@ using HarmonyLib;
 using UnityEngine;
 using UnityEngine.UI;
 using GameDevAssistant.Config;
+using GameDevAssistant.Modules.AssistButton;
 
 // note with English translation:
 // Designschwerpunkt = Design Focus
@@ -13,17 +14,23 @@ namespace GameDevAssistant
 {
     public partial class Hooks
     {
+        public const string BUTTON_GAMELENGTH = "Slider_Spiellänge";
+
         public class OnAutoDesignSlider
         {
             [HarmonyPostfix]
             [HarmonyPatch(typeof(Menu_DevGame), "BUTTON_AutoDesignSettings")]
-            public static void AlwaysPerfectSlider(Menu_DevGame __instance, genres ___genres_, int ___g_GameMainGenre, int ___g_GameSubGenre)
+            private static void AlwaysPerfectSlider(Menu_DevGame __instance, genres ___genres_, int ___g_GameMainGenre, int ___g_GameSubGenre)
             {
+                // Check if the mod is enabled and the auto design slider is enabled
                 if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistAutoDesignSliderEnabled.Value) { return; }
 
+                // Check if the button is interactable
+                bool isButtonInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Slider>(__instance.uiDesignschwerpunkte, BUTTON_GAMELENGTH);
+                if (!isButtonInteractable) { return; }
+                
                 // Find the design focus and design direction that fits with the genre, from the list of design focus and design direction
                 // without a review data.
-
                 UpdateDesignFocus(__instance, ___genres_, ___g_GameMainGenre, ___g_GameSubGenre);
                 UpdateDesignDirection(__instance, ___genres_, ___g_GameMainGenre, ___g_GameSubGenre);
                 SetWorkPriorities(__instance, ___genres_, ___g_GameMainGenre);

@@ -61,6 +61,9 @@
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mad Games Tycoon 2\Mad Games Tycoon 2_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mad Games Tycoon 2\Mad Games Tycoon 2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mad Games Tycoon 2\Mad Games Tycoon 2_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
@@ -81,10 +84,14 @@
     <Compile Include="src\Modules\AssistButton\AssistButtonManager.cs" />
     <Compile Include="src\Modules\AssistButton\AssistButtonHandler.cs" />
     <Compile Include="src\Modules\AssistButton\AssistButtonFeatures.cs" />
-    <Compile Include="src\Modules\AssistButton\Helper.cs" />
+    <Compile Include="src\Modules\AssistButton\Features\LanguageFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\Features\LicenceFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\AssistButtonHelper.cs" />
     <Compile Include="src\Modules\AssistButton\Features\AgeTargetGroupFeatures.cs" />
     <Compile Include="src\Modules\AssistButton\Features\ThemesFeatures.cs" />
     <Compile Include="src\Modules\AssistButton\Features\GenresFeatures.cs" />
+    <Compile Include="src\Modules\AssistButton\LicenceButton\LicenceButtonHandler.cs" />
+    <Compile Include="src\Modules\AssistButton\LicenceButton\LicenceButtonManager.cs" />
     <Compile Include="src\Modules\AssistButton\PlatformButton\PlatformsButtonHandler.cs" />
     <Compile Include="src\Modules\AssistButton\PlatformButton\PlatformsButtonManager.cs" />
     <Compile Include="src\Modules\AssistButton\Features\PlatformsFeatures.cs" />

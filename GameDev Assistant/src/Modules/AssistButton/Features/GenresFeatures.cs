@@ -22,7 +22,7 @@ namespace GameDevAssistant.Modules.AssistButton
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
             if (ConfigManager.IsPinnedMainGenreEnabled.Value && _menu_Dev_Game.g_GameMainGenre > 0) return;
             //check if the button is interactable
-            bool isButtonInteractable = Helper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_MAIN_GENRE);
+            bool isButtonInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_MAIN_GENRE);
             if (!isButtonInteractable) { return; }
 
             // -------------------------------------------------------------------------------------
@@ -65,7 +65,7 @@ namespace GameDevAssistant.Modules.AssistButton
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistGenreEnabled.Value) return;
             if (!IsSubGenreUnlocked(_menu_Dev_Game)) { return; }
             //check if the button is interactable
-            bool isButtonInteractable = Helper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_SUB_GENRE);
+            bool isButtonInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_SUB_GENRE);
             if (!isButtonInteractable) { return; }
             // -------------------------------------------------------------------------------------
 

@@ -1,36 +1,30 @@
-﻿using GameDevAssistant.Modules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine.UI;
+﻿
 using UnityEngine;
 using GameDevAssistant.Config;
 using GameDevAssistant.Modules.AssistButton;
 
 namespace GameDevAssistant.Modules
 {
-    public class PlatformsButtonHandler : ButtonHandlerBase
+    public class LicenceButtonHandler : ButtonHandlerBase
     {
-        public override string ButtonName => "Button_GameDevAssistant_Platforms";
-        public override string ButtonTooltip => "Just press this for automatic setup platforms!";
+        public override string ButtonName => "Button_GameDevAssistant_Licence";
+        public override string ButtonTooltip => "Just press this for automatic setup Licence!";
         protected override string MainGamePath => "CanvasInGameMenu";
         protected override string GameObjectPath => "Menu_Dev_Game";
         protected override string OrgButtonPath => "WindowMain/Seite4/Button_AutoDesingSettings";
 
-        protected override string MyButtonPath => "Menu_Dev_Game/WindowMain/Seite2/";
+        protected override string MyButtonPath => "Menu_Dev_Game/WindowMain/Seite1/";
         protected override string PicturePath => "GameDevAssistant/AssistButton";
-        protected override string PictureName => "iconPlatformButton.png";
+        protected override string PictureName => "iconLicenceButton.png";
 
-        private static PlatformsButtonHandler instance;
-        public static PlatformsButtonHandler Instance
+        private static LicenceButtonHandler instance;
+        public static LicenceButtonHandler Instance
         {
             get
             {
                 if (instance == null)
                 {
-                    instance = new PlatformsButtonHandler();
+                    instance = new LicenceButtonHandler();
                 }
                 return instance;
             }
@@ -39,7 +33,7 @@ namespace GameDevAssistant.Modules
         protected override void CustomizePlacedButton(GameObject button)
         {
             base.CustomizePlacedButton(button);
-            myButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(600.0f, 470.0f);
+            myButton.GetComponent<RectTransform>().anchoredPosition = new Vector2(55.0f, 140.0f);
         }
 
         protected override void OnButtonClicked()
@@ -50,11 +44,7 @@ namespace GameDevAssistant.Modules
             AssistButtonFeatures features = AssistButtonFeatures.Instance;
             features.Init();
 
-            //プラットフォーム自動化
-            for (int i = 0; i < (int)AssistButtonFeatures.PlatformSlots.Four; i++)
-            {
-                features.InitializePlatformSelection(i, false);
-            }
+                features.InitializeLicenceSelection(false);
         }
     }
 }

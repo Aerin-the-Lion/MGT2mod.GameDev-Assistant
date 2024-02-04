@@ -5,7 +5,6 @@ using System.Runtime.Remoting.Lifetime;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace GameDevAssistant
 {

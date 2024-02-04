@@ -10,12 +10,12 @@ namespace GameDevAssistant.Modules.AssistButton
 {
     public partial class AssistButtonFeatures
     {
-        private const string BUTTON_AGETARGETGROUP = "Button_Zielgruppe";
+        public const string BUTTON_AGETARGETGROUP = "Button_Zielgruppe";
         private void SetFitAgeTargetGroupAtRandom()
         {
             if (!ConfigManager.IsModEnabled.Value || !ConfigManager.IsAssistAgeTargetEnabled.Value) return;
             //check if the button is interactable
-            bool isButtonInteractable = Helper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_AGETARGETGROUP);
+            bool isButtonInteractable = AssistButtonHelper.IsInteractableUIObjectByName<Button>(_menu_Dev_Game.uiObjects, BUTTON_AGETARGETGROUP);
             if (!isButtonInteractable) { return; }
 
             // ---------------------------------------------------------------------------------------

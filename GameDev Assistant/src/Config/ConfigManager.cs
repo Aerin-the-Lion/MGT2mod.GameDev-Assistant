@@ -82,6 +82,17 @@ namespace GameDevAssistant.Config
             Retro = 3
         }
 
+        private enum LicenceFilterOptions
+        {
+            Name = 0,
+            SalesPrice = 1,
+            Popularity = 2,
+            TypeOfLicense = 3,
+            Uses = 4,
+            SuitableGenre = 5,
+            UnsuitableGenre = 6
+        }
+
         // =============================================================================================================
         // Config sections
         // =============================================================================================================
@@ -89,6 +100,7 @@ namespace GameDevAssistant.Config
         private const string MainSettingSection = "1. General Setting";
         private const string ColorSettingSection = "2. Coloring Settings";
         private const string AssistButtonSettingSection = "3. Assist Button Settings";
+        private const string MiscellaneousSettingSection = "4. Miscellaneous Settings";
 
         // =============================================================================================================
         // Config entries 
@@ -124,6 +136,20 @@ namespace GameDevAssistant.Config
 
         private static ConfigEntry<PlatformTypeOptions> ListPlatformType { get; set; }
         public static int PlatformType { get; private set; }
+
+        // License Config ------------------------------------------------------------
+        public static ConfigEntry<bool> IsAssistLicenseEnabled { get; private set; }
+        public static ConfigEntry<bool> IsSetLicenceNameEnabled { get; private set; }
+        private static ConfigEntry<LicenceFilterOptions> ListLicenceFilter { get; set; }
+        public static int LicenceFilter { get; private set; }
+
+        // Engine Feature Config ------------------------------------------------------------
+        public static ConfigEntry<bool> IsAssistEngineFeaturesEnabled { get; private set; }
+
+        // All Language Support Config ------------------------------------------------------------
+        public static ConfigEntry<bool> IsAssistAllLanguageEnabled { get; private set; }
+
+
 
 
 
@@ -164,7 +190,7 @@ namespace GameDevAssistant.Config
                 MainSettingSection,
                 "Assist Topics(Themes)",
                 true,
-                "Enabling this option assists with the Theme selection in the (topic)theme menu.");
+                "Enabling this option assists with the Topics(Themes) selection with the assist button.");
 
             // ----------------------------------------------------------------------------------------------------------------
             // Genre Config
@@ -172,7 +198,7 @@ namespace GameDevAssistant.Config
                 MainSettingSection,
                 "Assist Genres",
                 true,
-                "Enabling this option assists with the Genre selection in the genre menu.");
+                "Enabling this option assists with the Genre selection with the assist button.");
             // ----------------------------------------------------------------------------------------------------------------
 
             // AgeTarget Config
@@ -180,7 +206,7 @@ namespace GameDevAssistant.Config
                 MainSettingSection,
                 "Assist Age Target Group",
                 true,
-                "Enabling this option assists with the Age Target Group selection in the age target menu.");
+                "Enabling this option assists with the Age Target Group selection with the assist button.");
             // ----------------------------------------------------------------------------------------------------------------
 
             // Auto Design Slider Config
@@ -188,33 +214,62 @@ namespace GameDevAssistant.Config
                 MainSettingSection,
                 "Assist Auto Design Slider",
                 true,
-                "Enabling this option assists with adjusting the Concept Slider in the concept slider menu.");
+                "Enabling this option assists with adjusting the Concept Slider in the concept slider menu with the assist button.");
+            // ----------------------------------------------------------------------------------------------------------------
 
             // Random Name Config
             IsAssistRandomNameEnabled = ConfigFile.Bind(
-                AssistButtonSettingSection,
+                MiscellaneousSettingSection,
                 "Assist Random Name",
-                true,
+                false,
                 "Enabling this option assists with the Random Name with the assist button.");
+            // ----------------------------------------------------------------------------------------------------------------
 
             // Pinned Main Genre Config
             IsPinnedMainGenreEnabled = ConfigFile.Bind(
-                AssistButtonSettingSection,
+                MiscellaneousSettingSection,
                 "Pinned Main Genre",
-                true,
+                false,
                 "Enabling this option, the main genre in the genre menu is no longer changed when you're pushed the assist button.");
-
-            // Platform Config
-
-            IsAssistPlatformEnabled = ConfigFile.Bind(
-                AssistButtonSettingSection,
-                "Assist Platform",
-                true,
-                "Enabling this option assists with the Platform selection in the platform menu.");
-
-
             // ----------------------------------------------------------------------------------------------------------------
 
+            // Platform Config
+            IsAssistPlatformEnabled = ConfigFile.Bind(
+                MainSettingSection,
+                "Assist Platform",
+                true,
+                "Enabling this option assists with the Platform selection with the assist button.");
+            // ----------------------------------------------------------------------------------------------------------------
+
+            // License Config
+            IsAssistLicenseEnabled = ConfigFile.Bind(
+                MainSettingSection,
+                "Assist License",
+                true,
+                "Enabling this option assists with the License selection with the assist button.");
+
+            IsSetLicenceNameEnabled = ConfigFile.Bind(
+                MiscellaneousSettingSection,
+                "Set Licence Name",
+                true,
+                "Enabling this option assists with the Licence Name set to your game's name with the assist button.");
+            // ----------------------------------------------------------------------------------------------------------------
+
+            // Engine Features Config
+            IsAssistEngineFeaturesEnabled = ConfigFile.Bind(
+                MiscellaneousSettingSection,
+                "Assist Engine Features",
+                true,
+                "Enabling this option assists with the Engine Features selection with the assist button.");
+            // ----------------------------------------------------------------------------------------------------------------
+            
+            // All Language Support Config
+            IsAssistAllLanguageEnabled = ConfigFile.Bind(
+                MiscellaneousSettingSection,
+                "Assist All Language Support",
+                true,
+                "Enabling this option assists with the All Language Support selection with the assist button.");
+            // ----------------------------------------------------------------------------------------------------------------
             // Color Settings
             ListColorGood = ConfigFile.Bind(
                 ColorSettingSection,
@@ -254,6 +309,11 @@ namespace GameDevAssistant.Config
                 PlatformTypeOptions.Multiplatform,
                 new ConfigDescription("Platform type for the platform selection in the game dev of platform selection menu"));
 
+            ListLicenceFilter = ConfigFile.Bind(
+                AssistButtonSettingSection,
+                "Licence Filter",
+                LicenceFilterOptions.Popularity,
+                new ConfigDescription("Filter for the licence selection in the game dev of licence selection menu"));
             // =============================================================================================================
             InitDropdownSets();
             // Config setting event handlers here
@@ -283,6 +343,7 @@ namespace GameDevAssistant.Config
             SetColorSetting();
             SetPlatformFilter();
             SetPlatformType();
+            SetLicenceFilter();
         }
 
         private void SetColorSetting()
@@ -300,6 +361,11 @@ namespace GameDevAssistant.Config
         public void SetPlatformType()
         {
             PlatformType = (int)ListPlatformType.Value;
+        }
+
+        public void SetLicenceFilter()
+        {
+           LicenceFilter = (int)ListLicenceFilter.Value;
         }
     }
 }
