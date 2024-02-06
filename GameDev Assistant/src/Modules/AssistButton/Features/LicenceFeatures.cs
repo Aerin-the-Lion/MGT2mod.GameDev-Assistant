@@ -93,6 +93,7 @@ namespace GameDevAssistant.Modules.AssistButton
             {
                 // 対象となるプラットフォームが見つからなかった場合の処理
             }
+            _sfx.PlaySound(3, false);
         }
 
         private bool IsLicenceSelectionEnabled() => ConfigManager.IsModEnabled.Value;

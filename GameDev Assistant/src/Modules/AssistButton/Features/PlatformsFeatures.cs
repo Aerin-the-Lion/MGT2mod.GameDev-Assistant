@@ -45,7 +45,8 @@ namespace GameDevAssistant.Modules.AssistButton
             {
                 // 対象となるプラットフォームが見つからなかった場合の処理
             }
-           menuPlatform.gameObject.SetActive(false);
+            _sfx.PlaySound(3, false);
+            menuPlatform.gameObject.SetActive(false);
         }
 
         private bool IsPlatformSelectionEnabled() => ConfigManager.IsModEnabled.Value;

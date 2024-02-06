@@ -14,6 +14,7 @@ namespace GameDevAssistant.Modules.AssistButton
         private genres _genres;
         private themes _themes;
         private GUI_Main _guiMain;
+        private sfxScript _sfx;
         private const string BUTTON_INPUTFIELD_NAME = "InputFieldName";
         public enum PlatformSlots { Four = 4 }
 
@@ -52,6 +53,10 @@ namespace GameDevAssistant.Modules.AssistButton
             if(_guiMain == null)
             {
                 _guiMain = Traverse.Create(_menu_Dev_Game).Field("guiMain_").GetValue<GUI_Main>();
+            }
+            if(_sfx == null)
+            {
+                _sfx = Traverse.Create(_menu_Dev_Game).Field("sfx_").GetValue<sfxScript>();
             }
         }
 
@@ -128,8 +133,9 @@ namespace GameDevAssistant.Modules.AssistButton
             {
                 SetAllLanguage();
             }
-        }
 
+            _sfx.PlaySound(3, false);
+        }
         //forschungSonstiges - Research Miscellaneous
     }
 }
