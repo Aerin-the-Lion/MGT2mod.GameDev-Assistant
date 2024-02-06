@@ -1,4 +1,4 @@
-# GameDev Assistant
+# GameDev Assistant for Mad Games Tycoon 2(Mod)
 
 ## Motivation for Creating the Mod:
 This mod was inspired by "Mad Games Tycoon 2 - EzGameDev" by Asventi.
@@ -34,7 +34,7 @@ Please feel free to let me know your requests.<br>
 4. Drag and drop all the extracted files from BepInEx into the same folder as "Games Tycoon 2.exe."<br>
 
 ### 2. Install BepInEx.ConfigurationManager v17.1(Options)
-2.1. Download BepInEx.ConfigurationManager v17.1 from the following link:https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/download/v17.1/BepInEx.ConfigurationManager_v17.1.zip.<br>
+1. Download BepInEx.ConfigurationManager v17.1 from the following link:https://github.com/BepInEx/BepInEx.ConfigurationManager/releases/download/v17.1/BepInEx.ConfigurationManager_v17.1.zip.<br>
 2. After downloading, extract the contents of the ZIP file.<br>
 3. Locate your MGT2 game folder where the "Games Tycoon 2.exe" is located.<br>
 4. Drag and drop all the extracted files from BepInEx into the same folder as "Games Tycoon 2.exe."<br>
