@@ -28,7 +28,7 @@ Please feel free to let me know your requests.<br>
 
 ## [Installation]
 ### 1. To install BepInEx 5.4.21 (x86) for your MGT2
-1. Download BepInEx 5.4.21 (x86) from the following link: BepInEx_x86_5.4.21.0.zip.<br>
+1. Download BepInEx 5.4.21 (x86) from the following link: [BepInEx_x86_5.4.21.0.zip.](https://github.com/BepInEx/BepInEx/releases/download/v5.4.21/BepInEx_x86_5.4.21.0.zip)<br>
 2. After downloading, extract the contents of the ZIP file.<br>
 3. Locate your MGT2 game folder where the "Games Tycoon 2.exe" is located.<br>
 4. Drag and drop all the extracted files from BepInEx into the same folder as "Games Tycoon 2.exe."<br>
