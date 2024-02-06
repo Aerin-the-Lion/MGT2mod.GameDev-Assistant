@@ -63,6 +63,7 @@
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mad Games Tycoon 2\Mad Games Tycoon 2_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Mad Games Tycoon 2\Mad Games Tycoon 2_Data\Managed\UnityEngine.UI.dll</HintPath>
@@ -74,6 +75,7 @@
     <Compile Include="src\GameDevAssistant.Hepler.cs" />
     <Compile Include="src\Config\ConfigManager.cs" />
     <Compile Include="src\GameDevAssistant.cs" />
+    <Compile Include="src\Hooks\GameDev\OnInitGameplayFeatures.cs" />
     <Compile Include="src\Hooks\GameDev\OnPlatformPatch.cs" />
     <Compile Include="src\Hooks\GameDev\OnAgeTargetGroupPatch.cs" />
     <Compile Include="src\Hooks\GameDev\OnAutoDesignSliderPatch.cs" />
@@ -96,6 +98,7 @@
     <Compile Include="src\Modules\AssistButton\PlatformButton\PlatformsButtonManager.cs" />
     <Compile Include="src\Modules\AssistButton\Features\PlatformsFeatures.cs" />
     <Compile Include="src\Modules\Base\ButtonHandlerBase.cs" />
+    <Compile Include="src\Hooks\Performance\OptimizeInitGameplayFeatures.cs" />
     <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonManager.cs" />
     <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonFeatures.cs" />
     <Compile Include="src\Modules\PlatformHistory\SelectButton\SelectButtonHandler.cs" />

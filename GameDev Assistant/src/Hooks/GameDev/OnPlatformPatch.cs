@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameDevAssistant.src.Hooks.GameDev
+namespace GameDevAssistant
 {
-    internal class OnPlatformPatch
+    public class OnPlatformPatch
     {
     }
 }

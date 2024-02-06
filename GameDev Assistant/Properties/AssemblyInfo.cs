@@ -7,11 +7,11 @@ using GameDevAssistant;
 // 制御されます。アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("GameDev Assistant")]
-[assembly: AssemblyDescription("Under MIT License")]
+[assembly: AssemblyDescription("This plugin is available under the MIT License.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("GameDev Assistant")]
-[assembly: AssemblyCopyright("Copyright ©  2024")]
+[assembly: AssemblyCopyright("Copyright © 2024 Aerin the Lion")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

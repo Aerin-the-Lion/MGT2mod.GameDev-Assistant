@@ -30,6 +30,12 @@ namespace GameDevAssistant
             Harmony.CreateAndPatchAll(typeof(Hooks.OnAutoDesignSlider), PluginGuid);
             Harmony.CreateAndPatchAll(typeof(Hooks.OnStartPatch), PluginGuid);
             Harmony.CreateAndPatchAll(typeof(Hooks.OnTooltipPointerEnterPatch), PluginGuid);
+
+            //Harmony.CreateAndPatchAll(typeof(Hooks.OptimizeInitGameplayFeatures), PluginGuid);
+            //Harmony.CreateAndPatchAll(typeof(Hooks.OnBUTTON_Search), PluginGuid);
+            //Harmony.CreateAndPatchAll(typeof(Hooks.OnBUTTON_Click), PluginGuid);
+            //Harmony.CreateAndPatchAll(typeof(Hooks.OnCalcDevCosts), PluginGuid);
+
         }
     }
 }
